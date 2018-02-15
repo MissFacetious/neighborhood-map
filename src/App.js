@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Dropdown from 'react-dropdown'
+import Select from 'react-select';
+//import DropdownInput from 'react-dropdown-input';
 import './App.css';
 
 // constants
 const KEY = 'AIzaSyDyOfgG6r4Kh8HkyqMy1Fb_awuCl6TToEs';
-const URL = "https://maps.googleapis.com/maps/api/js?key="+KEY+"&callback=initMap";
+const URL = "https://maps.googleapis.com/maps/api/js?v=3&key="+KEY+"&callback=initMap";
 
 // properties
 var map = {
@@ -85,19 +86,35 @@ var state = {
 };
 
 const options = [
-  locations[0].name, locations[1].name, locations[2].name, locations[3].name, locations[4].name, locations[5].name
+  {	label: locations[0].name, value: '0' },
+  { label: locations[1].name, value: '1' },
+  {	label: locations[2].name, value: '2' },
+  { label: locations[3].name, value: '3' },
+  { label: locations[4].name, value: '4' },
+  { label: locations[5].name, value: '5' }
 ]
-
-const defaultOption = options[0];
 
 class App extends Component {
 
 	initMap() {
 		console.log("call initMap");
 		var mapDOM = new window.google.maps.Map(document.getElementById('map'));
-		var mapObject = new window.google.maps.Map(mapDOM, map);
-	}
-	
+		var mapObject = new window.google.maps.Map(document.getElementById('map'), map);
+		
+		locations.forEach (function(loc) {
+			var myLatLng = {lat: loc.location.lat, lng: loc.location.lng};
+
+			var marker = new window.google.maps.Marker({
+				position: myLatLng,
+				map: mapObject,
+				title: loc.name
+			});	
+			
+			
+			marker.setMap(mapObject);
+		});
+	};
+
 	loadMap() {
 		// load map div into var
 		var mapDOM = new window.google.maps.Map(document.getElementById('map'));
@@ -113,29 +130,19 @@ class App extends Component {
 		
 		// display the map information on map div
 		var mapObject = new window.google.maps.Map(document.getElementById('map'), map);
-	}
+	};
 	
 	filterMarkers() {
-		var mapDOM = new window.google.maps.Map(document.getElementById('map'));
-		var mapObject = new window.google.maps.Map(mapDOM, map);
 		
-		locations.forEach (function(loc) {
-			var myLatLng = {lat: loc.location.lat, lng: loc.location.lng};
-
-			var marker = new window.google.maps.Marker({
-				position: myLatLng,
-				map: mapObject,
-				title: loc.name
-			});	
-		});
 		
 
 		//var markerObject = new google.maps.Marker({marker});	
-	}
+	};
 	
 	componentWillMount() {
-		this.setState({ inError: false, isLoading: false });
-	}
+		console.log("component will mount");
+		this.setState({ inError: false, isLoading: true });
+	};
 	
 	componentDidMount() {
     // Connect the initMap() function within this class to the global window context,
@@ -147,13 +154,33 @@ class App extends Component {
 		script.src = URL;
 		script.async = true;
 		ref.parentNode.insertBefore(script, ref);
+		console.log("component did mount");
 		this.setState({ inError: false, isLoading: false });
-	}
+	};
 
 	componentWillUnmount() {
-		this.setState({ inError: false, isLoading: false });
+		console.log("component will unmount");
+	//	this.setState({ inError: false, isLoading: false });
+	};
+	
+	removeSelected(select) {
+	
 	}
 	
+	onChange(select) {
+		var mapDOM = new window.google.maps.Map(document.getElementById('map'));
+		var mapObject = new window.google.maps.Map(document.getElementById('map'), map);
+		
+		console.log(select);
+		var loc = locations[select];
+		var myLatLng = {lat: loc.location.lat, lng: loc.location.lng};
+		var marker = new window.google.maps.Marker({
+			position: myLatLng,
+			map: mapObject,
+			title: loc.name
+		});
+		marker.setMap(mapObject);
+	}
 	
 	render() {
 		const isLoading = this.state;
@@ -167,7 +194,18 @@ class App extends Component {
 //		this.filterMarkers();
 		return (
 			<div>
-				<Dropdown options={options} onChange={this._onSelect} value={defaultOption} placeholder="Select an option" />
+				<Select
+					closeOnSelect={false}
+					disabled={false}
+					multi
+					onChange={this.onChange}
+					options={options}
+					placeholder="Search..."
+					removeSelected={this.state.removeSelected}
+					rtl={this.state.rtl}
+					simpleValue
+					//value=[{options[0]}]
+				/>
 			</div>
 		);
 	}
