@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Select from 'react-select';
+import wiki from 'wikipediajs';
 //import DropdownInput from 'react-dropdown-input';
 import './App.css';
+
 
 // constants
 const KEY = 'AIzaSyDyOfgG6r4Kh8HkyqMy1Fb_awuCl6TToEs';
@@ -22,6 +24,7 @@ var map = {
 var locations = [
 	{
 		name: 'Minneapolis–Saint Paul International Airport, Terminal 1 & 2',
+		wiki: '',
 		city: 'None',
 		location: {
 			lat: 44.8847554, 
@@ -30,6 +33,7 @@ var locations = [
 	},
 	{
 		name: 'University of Minnesota Twin Cities',
+		wiki: 'University_of_Minnesota',
 		city: 'Minneapolis',
 		location: {
 			lat: 44.97399,
@@ -38,6 +42,7 @@ var locations = [
 	}, 
 	{
 		name: 'Minnesota Zoo',
+		wiki: 'Minnesota_Zoo',
 		city: 'Apple Valley',
 		location: {
 			lat: 44.767807,
@@ -45,7 +50,8 @@ var locations = [
 		},
 	}, 
 	{
-		name: 'Minnesota State Capital',
+		name: 'Minnesota State Capitol',
+		wiki: 'Minnesota_State_Capitol',
 		city: 'St. Paul',
 		location: {
 			lat: 44.95515,
@@ -54,6 +60,7 @@ var locations = [
 	}, 
 	{
 		name: 'Mall of America',
+		wiki: 'Mall_of_America',
 		city: 'Bloomington',
 		location: {
 			lat: 44.856691,
@@ -62,6 +69,7 @@ var locations = [
 	}, 
 	{
 		name: 'Minnesota State Fairgrounds',
+		wiki: 'Minnesota_State_Fair',
 		city: 'Falcon Heights',
 		location: {
 			lat: 44.981921,
@@ -110,34 +118,55 @@ class App extends Component {
 				title: loc.name
 			});	
 			
-			
+			marker.addListener('click', function() {
+				var method = 'GET';
+				var url = "https://en.wikipedia.org/w/api.php?format=json&action=parse&page="+loc.wiki+"&prop=text&section=0";
+				var xhr = new XMLHttpRequest();
+				xhr.open(method, url);
+				console.log(url);
+				// CORS needs to be turned on, else this will not work.. an error can be set and told in the console or webpage
+				xhr.onload = function(e){
+					if (xhr.readyState === 4 && xhr.status === 200){
+						var parseText = JSON.parse(xhr.responseText);
+						var content = parseText.parse.text["*"];
+						console.log(content);
+					} else {
+						console.error(xhr.statusText)
+					}
+					xhr.onerror = function(e){
+						console.error(xhr.statusText);
+					}
+				}
+				xhr.send();
+			});
+		
 			marker.setMap(mapObject);
 		});
 	};
-
-	loadMap() {
-		// load map div into var
-		var mapDOM = new window.google.maps.Map(document.getElementById('map'));
-		
-		// change zoom
-		//map.zoom = 4;
-		
-		// change the center location
-		map.center = {
-			lat: 0,
-			lng: 0,
-		};
-		
-		// display the map information on map div
-		var mapObject = new window.google.maps.Map(document.getElementById('map'), map);
-	};
 	
-	filterMarkers() {
+	dropDownOnChange(select) {
+		var mapDOM = new window.google.maps.Map(document.getElementById('map'));
+		var mapObject = new window.google.maps.Map(document.getElementById('map'), map);
 		
+		console.log(select);
+		var loc = locations[select];
+		var myLatLng = {lat: loc.location.lat, lng: loc.location.lng};
+		var marker = new window.google.maps.Marker({
+			position: myLatLng,
+			map: mapObject,
+			title: loc.name
+		});
 		
+		marker.addListener('click', function() {
+			
+		});
 
-		//var markerObject = new google.maps.Marker({marker});	
-	};
+		marker.setMap(mapObject);
+	}
+	
+	removeSelected(select) {
+	
+	}
 	
 	componentWillMount() {
 		console.log("component will mount");
@@ -163,25 +192,6 @@ class App extends Component {
 	//	this.setState({ inError: false, isLoading: false });
 	};
 	
-	removeSelected(select) {
-	
-	}
-	
-	onChange(select) {
-		var mapDOM = new window.google.maps.Map(document.getElementById('map'));
-		var mapObject = new window.google.maps.Map(document.getElementById('map'), map);
-		
-		console.log(select);
-		var loc = locations[select];
-		var myLatLng = {lat: loc.location.lat, lng: loc.location.lng};
-		var marker = new window.google.maps.Marker({
-			position: myLatLng,
-			map: mapObject,
-			title: loc.name
-		});
-		marker.setMap(mapObject);
-	}
-	
 	render() {
 		const isLoading = this.state;
 		
@@ -198,7 +208,7 @@ class App extends Component {
 					closeOnSelect={false}
 					disabled={false}
 					multi
-					onChange={this.onChange}
+					onChange={this.dropDownOnChange}
 					options={options}
 					placeholder="Search..."
 					removeSelected={this.state.removeSelected}
