@@ -5,15 +5,20 @@ class Item extends Component {
 
 	constructor(props) {
         super(props);
-		
-		this.state = {
-			currentOption: null
-		};
 	}
 	
 	render() {
+		console.log(this.props.options[0]);
+		var name = this.props.options[0].name;
+		var city = this.props.options[0].city;
+		console.log(name + ", " + city);
         return (
-		    <li className="listitem">1 {this.state.currentOption}</li>
+			<div className="row">
+				<ul className="listitem">
+					<li className="listitem">{name}</li>
+					<li className="listitem">{city}</li>
+				</ul>
+			</div>
         );
 	}
 }

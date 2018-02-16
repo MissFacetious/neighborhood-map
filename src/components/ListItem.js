@@ -6,59 +6,26 @@ class ListItem extends Component {
 
 	constructor(props) {
         super(props);
-		
-		this.state = {
-			currentOptions: null
-		};
 	}
 	
 	componentDidMount() {
-		
+		var locations = window.locations.locations;
     }
 	
-	updateList() {
-		var locations = window.locations.locations;
-		var co = null;
-		locations.forEach (function(loc) {
-			console.log(loc.marker);
-			if (loc.marker != null) {
-				co.Push(loc);
-			}
-		});
-		this.setState({ currentOptions: co });
-		console.log("currentOptions " + co);
-	}
-
     render() {
-		
-        return (
+		if (this.props.options != null && this.props.options.length > 0) {
+			var items = [];
 			// display the list of items here
-			<div>
-				<ul className="listitem">
-					<li className="listitem">Destination</li>
-					<li className="listitem">City</li>
-				</ul>
-				
-				<div className="row">
-					<ul className="listitem">
-						<Item 
-							options={this.state.currentOptions} 
-						/>
-						<Item />
-					
-					</ul>
-				</div>
-				<div className="row">
-					<ul className="listitem">
-						<Item 
-							options={this.state.currentOptions} 
-						/>
-						<Item />
-					
-					</ul>
-				</div>
-			</div>
-        );
+			this.props.options.forEach (function(loc) {
+				items.push({ name: loc.name, city: loc.city});
+			});
+			return (
+				<Item options={items} />
+			);
+		}
+		else { // empty so nothing to display
+			return (<div>sorry, nothing</div>);
+		}
     }
 }
 

@@ -27,6 +27,7 @@ class App extends Component {
 		this.state = {
 			map: null,
 			isLoading: true,
+			currentOptions: null,
 			// positions for landmarks
 			locations: [{
 				name: 'Minneapolis–Saint Paul International Airport, Terminal 1 & 2',
@@ -163,7 +164,7 @@ class App extends Component {
 	onChange(index) {
 		// remove markers on map
 		var map = this.state.map;
-		
+		var co = [];
 		var locations = this.state.locations;
 		locations.forEach (function(loc) {
 			if (loc.marker != null) {
@@ -186,10 +187,11 @@ class App extends Component {
 			loc.infoWindow.open(map, marker);
 		});
 		
+		co.push(loc);
 		loc.marker = marker;
 		marker.setMap(map);
 		locations[index] = loc;
-		this.setState({ map: map, locations: locations });
+		this.setState({ map: map, locations: locations, currentOptions: co });
 	};
 	
 	componentWillMount() {
@@ -252,9 +254,13 @@ class App extends Component {
 					/>
 				</div>
 				<div className="listitem">
+					<ul className="listitem">
+						<li className="listitem">Destination</li>
+						<li className="listitem">City</li>
+					</ul>
 					<ListItem 
 						onChange={this.onChange}
-						options={options}
+						options={this.state.currentOptions}
 					/>
 				</div>
 			</div>
