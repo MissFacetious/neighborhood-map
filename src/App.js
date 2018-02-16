@@ -165,14 +165,19 @@ class App extends Component {
 	
 	dropDownOnChange(select) {
 		console.log(select);
-		var map = this.state.map;
 		
 		// remove markers on map
-		this.state.locations.forEach (function(loc) {
-			loc.marker = null;
-		});
+		var map = this.state.map;
 		
-		var loc = this.state.locations[select.value];
+		var locations = this.state.locations;
+		locations.forEach (function(loc) {
+			if (loc.marker != null) {
+				loc.marker.setMap(null);
+				loc.marker = null;
+			}
+		});
+
+		var loc = locations[select.value];
 		var myLatLng = {lat: loc.location.lat, lng: loc.location.lng};
 		
 		var marker = new window.google.maps.Marker({
@@ -182,14 +187,13 @@ class App extends Component {
 		});
 		
 		marker.addListener('click', function() {
-			this.test();
-			//this.showInfoWindow(loc);
+			loc.infoWindow.open(map, marker);
 		});
 		
 		loc.marker = marker;
 		marker.setMap(map);
-		
-		this.setState({ map: map });
+		locations[select] = loc;
+		this.setState({ map: map, locations: locations });
 	}
 		
 	componentWillMount() {
