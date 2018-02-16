@@ -14,17 +14,22 @@ class ListItem extends Component {
 	
     render() {
 		if (this.props.options != null && this.props.options.length > 0) {
-			var items = [];
+			console.log(this.props.options.length);
 			// display the list of items here
-			this.props.options.forEach (function(loc) {
-				items.push({ name: loc.name, city: loc.city});
-			});
-			return (
-				<Item options={items} />
-			);
+			var items = this.props.options.forEach (function (loc) {
+				var item = { name: loc.name, city: loc.city };
+				console.log(item);
+				return (
+					<Item options={item} />
+				);
+			}, this);
+			
+			// we are having a problem rendering here, and instead it goes to blank
+			return (null);
 		}
-		else { // empty so nothing to display
-			return (<div>sorry, nothing</div>);
+		else {
+			// empty so nothing to display
+			return (<div></div>);
 		}
     }
 }

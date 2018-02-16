@@ -107,10 +107,12 @@ class App extends Component {
 		
 		var locations = this.state.locations;
 		var index = 0;
+		var co = [];
 		
 		locations.forEach (function(loc) {
 			var myLatLng = {lat: loc.location.lat, lng: loc.location.lng};
 
+			co.push(loc);
 			var marker = new window.google.maps.Marker({
 				position: myLatLng,
 				map: map,
@@ -118,30 +120,38 @@ class App extends Component {
 			});	
 			
 			// add information to windows and set in state for later usage
-			var infoWindow = new window.google.maps.InfoWindow({content: loc.name});
+			var infoWindow = new window.google.maps.InfoWindow({ content: loc.name });
+
 			var xhr = new XMLHttpRequest();
+
 			xhr.open('GET', WIKI_URL+"&page="+loc.wiki);
 			// CORS needs to be turned on, else this will not work.. an error can be set and told in the console or webpage
-			//console.log(WIKI_URL+"&page="+loc.wiki);
+			
 			xhr.onload = function(e){
+				console.log("XHR STATUS: " + xhr.status);
 				if (xhr.readyState === 4 && xhr.status === 200){
 					try {
 						var parseText = JSON.parse(xhr.responseText);
 						var content = parseText.parse.text["*"];
 					}
 					catch (error) {
-						console.log("problem with a url " + WIKI_URL+"&page="+loc.wiki);
-						return;
+						// this error catches if the wiki page can be parsed
+						console.log("problem with parsing wiki page: " + WIKI_URL+"&page="+loc.wiki);
+						content = "<div><p>Content would be provided by Wikipedia if page was formatted correctly.</p>\n" +
+							"<a href=\"https://en.wikipedia.org/wiki/"+loc.wiki+"\"></a>";
 					}
-					//console.log(content);
-					// this doesn't seem to update, we could just update the listitem instead
-					//infoWindow.setContent = content;
-					//infoWindow.open(map, marker);
-					} else {
-					console.error(xhr.statusText)
+					infoWindow.setContent(content);
+				} else {
+					console.log("status never came back from wiki page: " + WIKI_URL+"&page="+loc.wiki);
+					content = "<div><p>Content would be provided by Wikipedia if page responded.</p>\n" +
+							"<a href=\"https://en.wikipedia.org/wiki/"+loc.wiki+"\"></a>";
+					infoWindow.setContent(content);
 				}
 				xhr.onerror = function(e){
-					console.error(xhr.statusText);
+					console.log("problem with accessing wiki page: " + WIKI_URL+"&page="+loc.wiki);
+					content = "<div><p>"+xhr.statusText+"</p>\n" +
+							"<a href=\"https://en.wikipedia.org/wiki/"+loc.wiki+"\"></a>";
+					infoWindow.setContent(content);
 				}
 			}
 			xhr.send();
@@ -158,7 +168,7 @@ class App extends Component {
 			
 			index++;
 		});
-		this.setState({ map: map, locations: locations });
+		this.setState({ map: map, locations: locations, currentOptions: co });
 	};
 	
 	onChange(index) {
@@ -237,6 +247,14 @@ class App extends Component {
 		//if (isLoading) {
 		//	return <p>Loading map...</p>
 		//}
+		var items = [];
+		console.log("items " + this.state.currentOptions);		
+		if (this.state.currentOptions != null) {
+			// display the list of items here
+			this.state.currentOptions.forEach (function(loc) {
+				items.push({ name: loc.name, city: loc.city });
+			});
+		}
 		return (
 			<div>
 				<div className="dropdown">
@@ -258,13 +276,11 @@ class App extends Component {
 						<li className="listitem">Destination</li>
 						<li className="listitem">City</li>
 					</ul>
-					<ListItem 
-						onChange={this.onChange}
-						options={this.state.currentOptions}
-					/>
+					<ListItem onChange={this.onChange} options={items} />
 				</div>
 			</div>
 		);
+
 	}
 }
 
