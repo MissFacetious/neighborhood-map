@@ -218,6 +218,10 @@ class App extends Component {
 	handleClick(value) {
 		var map = this.state.map;
 		var marker = this.state.locations[value].marker;
+		
+		// bounce marker
+		marker.setAnimation(window.google.maps.Animation.BOUNCE);
+
 		// show infoWindow
 		var loc = this.state.locations[value];
 		loc.infoWindow.open(map, marker);
