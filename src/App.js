@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Select from 'react-select';
+import MultiSelect from './components/MultiSelect';
 import ListItem from './components/ListItem';
 import './App.css';
 
@@ -179,25 +180,31 @@ class App extends Component {
 				loc.marker = null;
 			}
 		});
+		
+		if (index != null && index != '') {
+			var array = index.split(',');
 
-		// create new marker based on drop down or list
-		var loc = locations[index.value];
-		var myLatLng = {lat: loc.location.lat, lng: loc.location.lng};
-		
-		var marker = new window.google.maps.Marker({
-			position: myLatLng,
-			map: map,
-			title: loc.name
-		});
-		
-		marker.addListener('click', function() {
-			loc.infoWindow.open(map, marker);
-		});
-		
-		co.push(loc);
-		loc.marker = marker;
-		marker.setMap(map);
-		locations[index] = loc;
+			array.forEach (function(spot) {
+				// create new marker based on drop down or list
+				var loc = locations[spot];
+				var myLatLng = {lat: loc.location.lat, lng: loc.location.lng};
+			
+				var marker = new window.google.maps.Marker({
+					position: myLatLng,
+					map: map,
+					title: loc.name
+				});
+			
+				marker.addListener('click', function() {
+					loc.infoWindow.open(map, marker);
+				});
+			
+				co.push(loc);
+				loc.marker = marker;
+				marker.setMap(map);
+				locations[index] = loc;
+			});
+		}
 		this.setState({ map: map, locations: locations, currentOptions: co });
 	};
 	
@@ -227,7 +234,7 @@ class App extends Component {
 		console.log("component will unmount");
 	//	this.setState({ inError: false, isLoading: false });
 	};
-	
+		
 	render() {
 		const isLoading = this.state;
 		var options = [
@@ -257,17 +264,9 @@ class App extends Component {
 		return (
 			<div>
 				<div className="dropdown">
-					<Select
-						//closeOnSelect={false}
-						//disabled={false}
-						//multi
-						onChange={this.onChange}
+					<MultiSelect 
 						options={options}
-						placeholder="Search..."
-						//removeSelected={this.state.removeSelected}
-						//rtl={this.state.rtl}
-						//simpleValue
-						//value=[{options[0]}]
+						onChange={this.onChange}
 					/>
 				</div>
 				<div className="listitem">
@@ -275,7 +274,7 @@ class App extends Component {
 						<li className="listitem">Destination</li>
 						<li className="listitem">City</li>
 					</ul>
-					<ListItem onChange={this.onChange} options={items} />
+					<ListItem options={items} />
 				</div>
 			</div>
 		);
