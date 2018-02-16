@@ -290,11 +290,11 @@ div.listitem {
 
 }
 
-div.row:nth-child(odd) { 
+div.row:nth-child(even) { 
 	background-color: #999;
 	color: #ddd; 
 }
-div.row:nth-child(even) { 
+div.row:nth-child(odd) { 
 	background-color: #ddd;
 	color: #999; 
 }
@@ -336,7 +336,6 @@ li.listitem {
 	width: 400px;
 	height: 400px;
 }
-
 	
 .App {
   text-align: center;

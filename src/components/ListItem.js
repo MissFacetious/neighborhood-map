@@ -14,18 +14,20 @@ class ListItem extends Component {
 	
     render() {
 		if (this.props.options != null && this.props.options.length > 0) {
-			console.log(this.props.options.length);
 			// display the list of items here
 			var items = this.props.options.forEach (function (loc) {
-				var item = { name: loc.name, city: loc.city };
-				console.log(item);
-				return (
-					<Item options={item} />
-				);
-			}, this);
+				var item = { key: loc.key, name: loc.name, city: loc.city };
+			});
 			
+			const listItems = this.props.options.map((loc) =>
+				<Item key={loc.key} options={loc} />
+			);
+			
+			return (
+				<ul>{listItems}</ul>
+			);
 			// we are having a problem rendering here, and instead it goes to blank
-			return (null);
+			//return (null);
 		}
 		else {
 			// empty so nothing to display

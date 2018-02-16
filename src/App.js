@@ -128,7 +128,6 @@ class App extends Component {
 			// CORS needs to be turned on, else this will not work.. an error can be set and told in the console or webpage
 			
 			xhr.onload = function(e){
-				console.log("XHR STATUS: " + xhr.status);
 				if (xhr.readyState === 4 && xhr.status === 200){
 					try {
 						var parseText = JSON.parse(xhr.responseText);
@@ -157,8 +156,6 @@ class App extends Component {
 			xhr.send();
 			
 			marker.addListener('click', function() {
-				//this.showInfoWindow(loc);
-				//console.log(loc);
 				loc.infoWindow.open(map, marker);
 			});
 		
@@ -248,11 +245,13 @@ class App extends Component {
 		//	return <p>Loading map...</p>
 		//}
 		var items = [];
-		console.log("items " + this.state.currentOptions);		
+		
 		if (this.state.currentOptions != null) {
 			// display the list of items here
+			var index = 0;
 			this.state.currentOptions.forEach (function(loc) {
-				items.push({ name: loc.name, city: loc.city });
+				items.push({ key: index, name: loc.name, city: loc.city });
+				index++;
 			});
 		}
 		return (
