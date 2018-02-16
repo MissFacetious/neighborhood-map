@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import Select from 'react-select';
 import MultiSelect from './components/MultiSelect';
 import ListItem from './components/ListItem';
 import './App.css';
-
 
 // constants
 const KEY = 'AIzaSyDyOfgG6r4Kh8HkyqMy1Fb_awuCl6TToEs';
@@ -27,7 +24,6 @@ class App extends Component {
 		
 		this.state = {
 			map: null,
-			isLoading: true,
 			currentOptions: null,
 			// positions for landmarks
 			locations: [{
@@ -102,8 +98,6 @@ class App extends Component {
 	};
 	
 	initMap() {
-		console.log("call initMap");
-		var mapDOM = new window.google.maps.Map(document.getElementById('map'));
 		var map = new window.google.maps.Map(document.getElementById('map'), mapDefault);
 		
 		var locations = this.state.locations;
@@ -181,7 +175,7 @@ class App extends Component {
 			}
 		});
 		
-		if (index != null && index != '') {
+		if (index !== null && index !== '') {
 			var array = index.split(',');
 
 			array.forEach (function(spot) {
@@ -209,7 +203,6 @@ class App extends Component {
 	};
 	
 	componentWillMount() {
-		console.log("component will mount");
 		//this.setState({ isLoading: true });
 		window.locations = {
 			locations: this.state.locations
@@ -226,17 +219,11 @@ class App extends Component {
 		script.src = GOOGLE_URL;
 		script.async = true;
 		ref.parentNode.insertBefore(script, ref);
-		console.log("component did mount");
+		
 		this.setState({ isLoading: false });
 	};
 
-	componentWillUnmount() {
-		console.log("component will unmount");
-	//	this.setState({ inError: false, isLoading: false });
-	};
-		
 	render() {
-		const isLoading = this.state;
 		var options = [
 			{ label: this.state.locations[0].name, value: '0' },
 			{ label: this.state.locations[1].name, value: '1' },

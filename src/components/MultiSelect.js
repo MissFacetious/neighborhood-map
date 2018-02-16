@@ -19,10 +19,7 @@ var MultiSelect = createClass({
 		};
 	},
 	handleSelectChange (value) {
-		console.log('You\'ve selected:', value);
 		this.setState({ value });
-		console.log("send info to parent " + this.state.value);
-		console.log(this.props);
 		this.props.onChange(value);
 	},
 	
@@ -33,7 +30,7 @@ var MultiSelect = createClass({
 	//},
 	
 	render () {
-		const { crazy, disabled, stayOpen, value } = this.state;
+		const { disabled, stayOpen, value } = this.state;
 		const options = this.props.options;
 		return (
 			<Select
