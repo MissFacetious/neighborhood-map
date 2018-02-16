@@ -34,11 +34,29 @@ class ListItem extends Component {
         return (
 			// display the list of items here
 			<div>
-				<ul>
-					<Item 
-						options={this.state.currentOptions} 
-					/>
+				<ul className="listitem">
+					<li className="listitem">Destination</li>
+					<li className="listitem">City</li>
 				</ul>
+				
+				<div className="row">
+					<ul className="listitem">
+						<Item 
+							options={this.state.currentOptions} 
+						/>
+						<Item />
+					
+					</ul>
+				</div>
+				<div className="row">
+					<ul className="listitem">
+						<Item 
+							options={this.state.currentOptions} 
+						/>
+						<Item />
+					
+					</ul>
+				</div>
 			</div>
         );
     }

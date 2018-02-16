@@ -13,7 +13,7 @@ class Item extends Component {
 	
 	render() {
         return (
-            <li>{this.state.currentOption}</li>
+		    <li className="listitem">1 {this.state.currentOption}</li>
         );
 	}
 }

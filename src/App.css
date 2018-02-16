@@ -279,7 +279,7 @@ margin:15px 0;
 color:#666}.virtual-scroll{z-index:1}
 	
 	
-.listitem {
+div.listitem {
 	background-color: white;
 	position: fixed;
 	z-index: 100;
@@ -289,7 +289,32 @@ color:#666}.virtual-scroll{z-index:1}
 	width: 33%;
 
 }
-	
+
+div.row:nth-child(odd) { 
+	background-color: #999;
+	color: #ddd; 
+}
+div.row:nth-child(even) { 
+	background-color: #ddd;
+	color: #999; 
+}
+
+ul.listitem  {
+	-moz-column-count: 2;
+    -moz-column-gap: 0px;
+    -webkit-column-count: 2;
+    -webkit-column-gap: 0px;
+    column-count: 2;
+    column-gap: 0px;
+}
+
+li.listitem {
+	list-style: none;
+	padding: 0px;
+	-webkit-padding-start: 0px;
+	margin: 0px;
+}
+
 .dropdown {
 	background-color: white;
 	position: fixed;
