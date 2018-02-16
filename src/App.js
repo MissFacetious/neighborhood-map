@@ -134,7 +134,7 @@ class App extends Component {
 						content = "<div><p>Content would be provided by Wikipedia if page was formatted correctly.</p>\n" +
 							"<a href=\"https://en.wikipedia.org/wiki/"+loc.wiki+"\"></a>";
 					}
-					infoWindow.setContent(content);
+					infoWindow.setContent("<p>from Wikipedia:</p>"+content);
 				} else {
 					console.log("status never came back from wiki page: " + WIKI_URL+"&page="+loc.wiki);
 					content = "<div><p>Content would be provided by Wikipedia if page responded.</p>\n" +
