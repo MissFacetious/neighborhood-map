@@ -30,6 +30,7 @@ class App extends Component {
 				name: 'Minneapolis–Saint Paul International Airport, Terminal 1 & 2',
 				wiki: 'Minneapolis–Saint_Paul_International_Airport',
 				city: 'None',
+				key: 0,
 				location: {
 					lat: 44.8847554, 
 					lng: -93.22228459999997,
@@ -41,6 +42,7 @@ class App extends Component {
 				name: 'University of Minnesota Twin Cities',
 				wiki: 'University_of_Minnesota',
 				city: 'Minneapolis',
+				key: 1,
 				location: {
 					lat: 44.97399,
 					lng: -93.22772850000001, 
@@ -52,6 +54,7 @@ class App extends Component {
 				name: 'Minnesota Zoo',
 				wiki: 'Minnesota_Zoo',
 				city: 'Apple Valley',
+				key: 2,
 				location: {
 					lat: 44.767807,
 					lng: -93.19667179999999, 
@@ -63,6 +66,7 @@ class App extends Component {
 				name: 'Minnesota State Capitol',
 				wiki: 'Minnesota_State_Capitol',
 				city: 'St. Paul',
+				key: 3,
 				location: {
 					lat: 44.95515,
 					lng: -93.10223300000001, 
@@ -74,6 +78,7 @@ class App extends Component {
 				name: 'Mall of America',
 				wiki: 'Mall_of_America',
 				city: 'Bloomington',
+				key: 4,
 				location: {
 					lat: 44.856691,
 					lng: -93.24130939999998,
@@ -85,6 +90,7 @@ class App extends Component {
 				name: 'Minnesota State Fairgrounds',
 				wiki: 'Minnesota_State_Fair',
 				city: 'Falcon Heights',
+				key: 5,
 				location: {
 					lat: 44.981921,
 					lng: -93.1731168, 
@@ -257,10 +263,8 @@ class App extends Component {
 		
 		if (this.state.currentOptions != null) {
 			// display the list of items here
-			var index = 0;
 			this.state.currentOptions.forEach (function(loc) {
-				items.push({ key: index, name: loc.name, city: loc.city });
-				index++;
+				items.push({ key: loc.key, name: loc.name, city: loc.city });
 			});
 		}
 		return (

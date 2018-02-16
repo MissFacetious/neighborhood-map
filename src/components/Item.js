@@ -14,14 +14,13 @@ var Item = createClass({
 		};
 	},
 	handleClick() {
-		var value = this.props.options.key;
-		this.props.onClick(value);
+		var key = this.props.options.key;
+		this.props.onClick(key);
 	},
 	render() {
 		if (this.props.options != null) {
 			var name = this.props.options.name;
 			var city = this.props.options.city;
-			var value = this.props.options.key;
 			return (
 				<div className="row">
 					<ul className="listitem">
@@ -29,6 +28,7 @@ var Item = createClass({
 						<li className="listitem">{city}</li>
 						<li className="listitem">
 							<input type="button" 
+								
 								value="Information"
 								onClick={this.handleClick}
 							/>
