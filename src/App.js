@@ -95,10 +95,9 @@ class App extends Component {
 				infoWindow: null,
 			}]
 		}
-		
 		this.initMap = this.initMap.bind(this);
-		this.dropDownOnChange = this.dropDownOnChange.bind(this);
-	}
+		this.onChange = this.onChange.bind(this);
+	};
 	
 	initMap() {
 		console.log("call initMap");
@@ -158,14 +157,10 @@ class App extends Component {
 			
 			index++;
 		});
-		
-		
 		this.setState({ map: map, locations: locations });
 	};
 	
-	dropDownOnChange(select) {
-		console.log(select);
-		
+	onChange(index) {
 		// remove markers on map
 		var map = this.state.map;
 		
@@ -177,7 +172,8 @@ class App extends Component {
 			}
 		});
 
-		var loc = locations[select.value];
+		// create new marker based on drop down or list
+		var loc = locations[index.value];
 		var myLatLng = {lat: loc.location.lat, lng: loc.location.lng};
 		
 		var marker = new window.google.maps.Marker({
@@ -192,13 +188,16 @@ class App extends Component {
 		
 		loc.marker = marker;
 		marker.setMap(map);
-		locations[select] = loc;
+		locations[index] = loc;
 		this.setState({ map: map, locations: locations });
-	}
-		
+	};
+	
 	componentWillMount() {
 		console.log("component will mount");
 		//this.setState({ isLoading: true });
+		window.locations = {
+			locations: this.state.locations
+		};
 	};
 	
 	componentDidMount() {
@@ -238,19 +237,26 @@ class App extends Component {
 		//}
 		return (
 			<div>
-				<Select
-					//closeOnSelect={false}
-					//disabled={false}
-					//multi
-					onChange={this.dropDownOnChange}
-					options={options}
-					placeholder="Search..."
-					//removeSelected={this.state.removeSelected}
-					//rtl={this.state.rtl}
-					//simpleValue
-					//value=[{options[0]}]
-				/>
-			//<ListItem openInfoWindow={this.openInfoWindow} />
+				<div className="dropdown">
+					<Select
+						//closeOnSelect={false}
+						//disabled={false}
+						//multi
+						onChange={this.onChange}
+						options={options}
+						placeholder="Search..."
+						//removeSelected={this.state.removeSelected}
+						//rtl={this.state.rtl}
+						//simpleValue
+						//value=[{options[0]}]
+					/>
+				</div>
+				<div className="listitem">
+					<ListItem 
+						onChange={this.onChange}
+						options={options}
+					/>
+				</div>
 			</div>
 		);
 	}
