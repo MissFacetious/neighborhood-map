@@ -95,8 +95,11 @@ class App extends Component {
 		}
 		this.initMap = this.initMap.bind(this);
 		this.onChange = this.onChange.bind(this);
+		this.handleClick = this.handleClick.bind(this);
 	};
-	
+
+	// initialize the google map with infowindows of information from wikipedia,
+	// by default, show all locations on map
 	initMap() {
 		var map = new window.google.maps.Map(document.getElementById('map'), mapDefault);
 		
@@ -163,6 +166,8 @@ class App extends Component {
 		this.setState({ map: map, locations: locations, currentOptions: co });
 	};
 	
+	// a change in the dropdown will filter what markers will be seen on the map and
+	// what rows will display in the list
 	onChange(index) {
 		// remove markers on map
 		var map = this.state.map;
@@ -201,6 +206,16 @@ class App extends Component {
 		}
 		this.setState({ map: map, locations: locations, currentOptions: co });
 	};
+	
+	// when the button to see more info is hit from the list, show infoWindow on map and 
+	// animate the map marker
+	handleClick(value) {
+		var map = this.state.map;
+		var marker = this.state.locations[value].marker;
+		// show infoWindow
+		var loc = this.state.locations[value];
+		loc.infoWindow.open(map, marker);
+	}
 	
 	componentWillMount() {
 		//this.setState({ isLoading: true });
@@ -260,8 +275,12 @@ class App extends Component {
 					<ul className="listitem">
 						<li className="listitem">Destination</li>
 						<li className="listitem">City</li>
+						<li className="listitem">More Info</li>
 					</ul>
-					<ListItem options={items} />
+					<ListItem 
+						onClick={this.handleClick}
+						options={items} 
+					/>
 				</div>
 			</div>
 		);
