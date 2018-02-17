@@ -11,7 +11,7 @@ CORS will need to be turned off in order to access cross scripting from Wikipedi
 https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=en
 
 # packages used
-* React, React-dom, react-router, react-router-dom, react-scripts, react-select
+* React, React-dom, react-router, react-router-dom, react-scripts, react-select, create-react-class
 * Google Maps API
 * MediaWiki API
 

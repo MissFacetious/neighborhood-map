@@ -22,13 +22,6 @@ var MultiSelect = createClass({
 		this.setState({ value });
 		this.props.onChange(value);
 	},
-	
-	//componentDidUpdate() {
-//		console.log("send info to parent");
-		//console.log(this.state);
-		//this.props.onChange(this.state.value);
-	//},
-	
 	render () {
 		const { disabled, stayOpen, value } = this.state;
 		const options = this.props.options;
