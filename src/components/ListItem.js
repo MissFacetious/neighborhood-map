@@ -24,10 +24,8 @@ var ListItem = createClass({
 			);
 			
 			return (
-				<ul>{listItems}</ul>
+				<div>{listItems}</div>
 			);
-			// we are having a problem rendering here, and instead it goes to blank
-			//return (null);
 		}
 		else {
 			// empty so nothing to display

@@ -25,6 +25,7 @@ var MultiSelect = createClass({
 	render () {
 		const { disabled, stayOpen, value } = this.state;
 		const options = this.props.options;
+		// The drop down that will filter out what markers on the map and locations are in the list
 		return (
 			<Select
 				closeOnSelect={!stayOpen}

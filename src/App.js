@@ -11,9 +11,9 @@ const WIKI_URL = "https://en.wikipedia.org/w/api.php?format=json&action=parse&pr
 // properties
 var mapDefault = {
 	zoom: 10,
-	center: { // mpls
-		lat: 44.9706756, 
-		lng: -93.331518,
+	center: { // fort snelling
+		lat: 44.783573,
+		lng: -93.2295506,
 	}
 };
 
@@ -228,14 +228,13 @@ class App extends Component {
 	}
 	
 	componentWillMount() {
-		//this.setState({ isLoading: true });
 		window.locations = {
 			locations: this.state.locations
 		};
 	};
 	
 	componentDidMount() {
-    // Connect the initMap() function within this class to the global window context,
+		// Connect the initMap() function within this class to the global window context,
         // so Google Maps can invoke it
         window.initMap = this.initMap;
 		
@@ -257,16 +256,11 @@ class App extends Component {
 			{ label: this.state.locations[4].name, value: '4' },
 			{ label: this.state.locations[5].name, value: '5' }
 		]
-//		if (inError) {
-//			return <p>ERROR! {this.state.error}</p>;
-//		}
-		//if (isLoading) {
-		//	return <p>Loading map...</p>
-		//}
+		
 		var items = [];
 		
 		if (this.state.currentOptions != null) {
-			// display the list of items here
+			// create the list view of items here
 			this.state.currentOptions.forEach (function(loc) {
 				items.push({ key: loc.key, name: loc.name, city: loc.city });
 			});
