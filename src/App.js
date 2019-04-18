@@ -4,7 +4,7 @@ import ListItem from './components/ListItem';
 import './App.css';
 
 // constants
-const KEY = 'AIzaSyDyOfgG6r4Kh8HkyqMy1Fb_awuCl6TToEs';
+const KEY = '_GOOGLE_MAPS_KEY_';
 const GOOGLE_URL = "https://maps.googleapis.com/maps/api/js?v=3&key="+KEY+"&callback=initMap";
 const WIKI_URL = "https://en.wikipedia.org/w/api.php?format=json&action=parse&prop=text&section=0";
 
